@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shashi Das - Calc & Counter</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="main-container">
+        
+        <div class="card-box">
+            <h3>Calculator</h3>
+            <input type="text" id="calc-screen" readonly placeholder="0">
+            <div class="calc-grid">
+                <button class="btn btn-clear" onclick="clearScreen()">C</button>
+                <button class="btn btn-op" onclick="pressKey('/')">÷</button>
+                <button class="btn btn-op" onclick="pressKey('*')">×</button>
+                <button class="btn btn-op" onclick="pressKey('-')">-</button>
+
+                <button class="btn btn-num" onclick="pressKey('7')">7</button>
+                <button class="btn btn-num" onclick="pressKey('8')">8</button>
+                <button class="btn btn-num" onclick="pressKey('9')">9</button>
+                <button class="btn btn-op" onclick="pressKey('+')">+</button>
+
+                <button class="btn btn-num" onclick="pressKey('4')">4</button>
+                <button class="btn btn-num" onclick="pressKey('5')">5</button>
+                <button class="btn btn-num" onclick="pressKey('6')">6</button>
+                <button class="btn btn-num" onclick="pressKey('0')">0</button>
+
+                <button class="btn btn-num" onclick="pressKey('1')">1</button>
+                <button class="btn btn-num" onclick="pressKey('2')">2</button>
+                <button class="btn btn-num" onclick="pressKey('3')">3</button>
+                <button class="btn btn-num" onclick="pressKey('.')">.</button>
+
+                <button class="btn btn-equal" onclick="executeCalc()">=</button>
+            </div>
+        </div>
+
+        <div class="card-box">
+            <h3>Counter</h3>
+            <div id="counter-display">0</div>
+            <div class="counter-actions">
+                <button class="btn-count btn-green" onclick="updateCounter(1)">Increase</button>
+                <button class="btn-count btn-yellow" onclick="updateCounter(-1)">Decrease</button>
+                <button class="btn-count btn-red" onclick="resetCounter()">Reset</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
