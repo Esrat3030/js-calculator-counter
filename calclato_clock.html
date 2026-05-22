@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator & Counter</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+
+        body {
+            background-color: #111b21;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .main-container {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .card-box {
+            background-color: #1f2c34;
+            padding: 30px 25px;
+            border-radius: 20px;
+            width: 320px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        h3 {
+            color: #ffffff;
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        /* Calculator Styling */
+        #calc-screen {
+            width: 100%;
+            height: 60px;
+            background-color: #2a3942;
+            border: 2px solid #3b4a54;
+            border-radius: 12px;
+            color: #ffffff;
+            text-align: right;
+            padding: 15px;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            outline: none;
+        }
+
+        .calc-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        .btn {
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            font-weight: 500;
+            padding: 18px 0;
+            cursor: pointer;
+            transition: background 0.1s ease;
+        }
+
+        .btn-clear {
+            background-color: #ea5455;
+            color: #ffffff;
+        }
+
+        .btn-op {
+            background-color: #3b4a54;
+            color: #00a884;
+        }
+
+        .btn-num {
+            background-color: #e9edef;
+            color: #111b21;
+        }
+
+        .btn-num:hover {
+            background-color: #d1d7db;
+        }
+
+        .btn-op:hover {
+            background-color: #4a5d6a;
+        }
+
+        .btn-clear:hover {
+            background-color: #e5383b;
+        }
+
+        .btn-equal {
+            grid-column: span 4;
+            background-color: #00a884;
+            color: #ffffff;
+            font-size: 1.5rem;
+        }
+
+        .btn-equal:hover {
+            background-color: #008f72;
+        }
+
+        /* Counter Styling */
+        #counter-display {
+            font-size: 4.5rem;
+            font-weight: bold;
+            color: #ffffff;
+            margin: 35px 0;
+        }
+
+        .counter-actions {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .btn-count {
+            flex: 1;
+            border: none;
+            padding: 12px 5px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            color: #ffffff;
+            transition: opacity 0.1s ease;
+        }
+
+        .btn-count:hover {
+            opacity: 0.9;
+        }
+
+        .btn-green {
+            background-color: #00a884;
+        }
+
+        .btn-yellow {
+            background-color: #e1b12c;
+            color: #111b21;
+        }
+
+        .btn-red {
+            background-color: #ea5455;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-container">
+
+        <div class="card-box">
+            <h3>Calculator</h3>
+
+            <input type="text" id="calc-screen" readonly placeholder="0">
+
+            <div class="calc-grid">
+                <button class="btn btn-clear" onclick="clearScreen()">C</button>
+                <button class="btn btn-op" onclick="pressKey('/')">÷</button>
+                <button class="btn btn-op" onclick="pressKey('*')">×</button>
+                <button class="btn btn-op" onclick="pressKey('-')">-</button>
+
+                <button class="btn btn-num" onclick="pressKey('7')">7</button>
+                <button class="btn btn-num" onclick="pressKey('8')">8</button>
+                <button class="btn btn-num" onclick="pressKey('9')">9</button>
+                <button class="btn btn-op" onclick="pressKey('+')">+</button>
+
+                <button class="btn btn-num" onclick="pressKey('4')">4</button>
+                <button class="btn btn-num" onclick="pressKey('5')">5</button>
+                <button class="btn btn-num" onclick="pressKey('6')">6</button>
+                <button class="btn btn-num" onclick="pressKey('0')">0</button>
+
+                <button class="btn btn-num" onclick="pressKey('1')">1</button>
+                <button class="btn btn-num" onclick="pressKey('2')">2</button>
+                <button class="btn btn-num" onclick="pressKey('3')">3</button>
+                <button class="btn btn-num" onclick="pressKey('.')">.</button>
+
+                <button class="btn btn-equal" onclick="executeCalc()">=</button>
+            </div>
+        </div>
+
+        <div class="card-box">
+            <h3>Counter</h3>
+
+            <div id="counter-display">0</div>
+
+            <div class="counter-actions">
+                <button class="btn-count btn-green" onclick="updateCounter(1)">Increase</button>
+                <button class="btn-count btn-yellow" onclick="updateCounter(-1)">Decrease</button>
+                <button class="btn-count btn-red" onclick="resetCounter()">Reset</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Calculator Functionality
+        const calcScreen = document.getElementById('calc-screen');
+
+        function pressKey(value) {
+            if (calcScreen.value === '0' && value !== '.') {
+                calcScreen.value = value;
+            } else if (calcScreen.value === 'Error') {
+                calcScreen.value = value;
+            } else {
+                calcScreen.value += value;
+            }
+        }
+
+        function clearScreen() {
+            calcScreen.value = '';
+        }
+
+        function executeCalc() {
+            try {
+                if (calcScreen.value !== '') {
+                    let result = Function('"use strict"; return (' + calcScreen.value + ')')();
+                    calcScreen.value = result;
+                }
+            } catch (error) {
+                calcScreen.value = 'Error';
+            }
+        }
+
+        // Counter Functionality
+        let currentCount = 0;
+        const counterDisplay = document.getElementById('counter-display');
+
+        function updateCounter(amount) {
+            currentCount += amount;
+            counterDisplay.textContent = currentCount;
+        }
+
+        function resetCounter() {
+            currentCount = 0;
+            counterDisplay.textContent = currentCount;
+        }
+    </script>
+
+</body>
+</html>
